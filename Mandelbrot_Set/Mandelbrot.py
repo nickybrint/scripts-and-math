@@ -1,10 +1,10 @@
 from PIL import Image
 
-MAX_ITERATIONS = 255
-IMAGE_WIDTH, IMAGE_HEIGHT = 192, 108
-LEFT_X, BOTTOM_Y = 0.3, 0.025
-RIGHT_X = 0.3001
-PIXEL_WIDTH = (RIGHT_X - LEFT_X)/IMAGE_WIDTH
+#MAX_ITERATIONS = 50
+#IMAGE_WIDTH, IMAGE_HEIGHT = 300, 300
+#LEFT_X, BOTTOM_Y = 0.3, 0.025
+#RIGHT_X = 0.3001
+
 
 def divergenceTest(c, MAX_ITERATIONS):
 
@@ -24,12 +24,12 @@ def divergenceTest(c, MAX_ITERATIONS):
     
     z = [0, 0]
     iterations = 0
-    while abs(z[0]) < 10 and abs(z[1]) < 10 and iterations < MAX_ITERATIONS:
+    while abs(z[0]) < 4 and abs(z[1]) < 4 and iterations < MAX_ITERATIONS:
         z = [z[0]**2 - z[1]**2 + c[0], 2*z[0]*z[1] + c[1]]
         iterations += 1
     return iterations
 
-def fillMandelbrot(image, MAX_ITERATIONS, LEFT_X, BOTTOM_Y, PIXEL_WIDTH):
+def fillMandelbrot(image, MAX_ITERATIONS, LEFT_X, BOTTOM_Y, RIGHT_X, PIXEL_WIDTH, IMAGE_HEIGHT, IMAGE_WIDTH):
     '''
         fills a PIL Image with the mandelbrot set on the given range
     '''
@@ -40,7 +40,7 @@ def fillMandelbrot(image, MAX_ITERATIONS, LEFT_X, BOTTOM_Y, PIXEL_WIDTH):
             iterations = divergenceTest(c, MAX_ITERATIONS)
             
             color = (0,0,0)
-            if iterations != MAX_ITERATIONS:
+            if iterations < MAX_ITERATIONS:
                 color = (int(iterations*(255/MAX_ITERATIONS)), int(iterations*(255/MAX_ITERATIONS)), 200)
             '''
             if iterations == -1:
@@ -73,12 +73,19 @@ def doRegistry():
     return newImageNumber
 
 
-def main():
+def main(LEFT_X, RIGHT_X, BOTTOM_Y, IMAGE_HEIGHT, IMAGE_WIDTH, MAX_ITERATIONS):
+    '''
+        returns a png of the mangelbrot set
+    '''
+    PIXEL_WIDTH = (RIGHT_X - LEFT_X)/IMAGE_WIDTH
     image = Image.new('RGB', (IMAGE_WIDTH, IMAGE_HEIGHT), 0)
-    fillMandelbrot(image, MAX_ITERATIONS, LEFT_X, BOTTOM_Y, PIXEL_WIDTH)
+    fillMandelbrot(image, MAX_ITERATIONS, LEFT_X, BOTTOM_Y, RIGHT_X, PIXEL_WIDTH, IMAGE_HEIGHT, IMAGE_WIDTH)
+    return image
+    
+'''
+image = main(float(raw_input()), float(raw_input()), float(raw_input()), 300, 300)
+#imageID = doRegistry()
+#image.save('mandelbrot' + str(imageID) + '.gif')
+image.show()
 
-    imageID = doRegistry()
-    image.save('mandelbrot' + str(imageID) + '.png')
-    image.show()
-
-main()
+'''

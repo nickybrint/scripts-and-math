@@ -22,6 +22,8 @@ class App:
         self.point1 = [0, 0]
         #bottom right of zoom selection
         self.point2 = [0, 0]
+        #current mouse position
+        self.point3 = [0, 0]
         #whether zoom selection was cancelled
         self.cancelled = False
         #pixel dimensions
@@ -64,7 +66,7 @@ class App:
     def onRelease(self, event):
         if self.cancelled:
             return
-        
+
         self.point2 = [event.x, event.y]
         
         if self.point1[0] == self.point2[0] or self.point1[1] == self.point2[0]:
@@ -101,14 +103,14 @@ class App:
     def drawBox(self, event):
         #redraw the background
         self.panel.create_image((0, 0), anchor='nw', image=self.photo)
+        
         if not self.cancelled:
-            
-            point3 = [event.x, event.y]
+            self.point3 = [event.x, event.y]
             #put a box over the region the user selects
             self.panel.create_rectangle( self.point1[0],
-                                        point3[1] - (point3[0] - self.point1[0]),
-                                        point3[0],
-                                        point3[1],
+                                        self.point3[1] - (self.point3[0] - self.point1[0]),
+                                        self.point3[0],
+                                        self.point3[1],
                                         fill="",
                                         outline="white" )
         
@@ -120,6 +122,7 @@ class App:
 
     def save(self):
         date_time = datetime.datetime.now().strftime("%H_%M_%m_%d_%y")
+        #save the PIL-format image
         self.i.save('mandelbrot_' + date_time + '.jpg')
 
     def quit(self):
