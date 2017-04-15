@@ -27,7 +27,7 @@ class App:
         #whether zoom selection was cancelled
         self.cancelled = False
         #pixel dimensions
-        self.IMAGE_WIDTH, self.IMAGE_HEIGHT = 500, 500
+        self.IMAGE_WIDTH, self.IMAGE_HEIGHT = 600, 600
         #iterations for the mandelbrot generator
         self.iterations = 30.0
         #width (on graph) of the current view
@@ -127,9 +127,12 @@ class App:
         self.panel.create_image((0, 0), anchor='nw', image=self.photo)
 
     def save(self):
-        date_time = datetime.datetime.now().strftime("%H_%M_%m_%d_%y")
+        #date_time = datetime.datetime.now().strftime("%H_%M_%m_%d_%y")
+        location = ('x' + str(self.topLeftCorner[0])
+                    + '_y' + str(self.topLeftCorner[1])
+                    + '_width' + str(self.currentWidth) )
         #save the PIL-format image
-        self.i.save('mandelbrot_' + date_time + '.jpg')
+        self.i.save('img\mandelbrot_' + location + '.jpg')
 
     def quit(self):
         #destroy both windows
