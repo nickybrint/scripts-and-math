@@ -76,12 +76,18 @@ class App:
         newLeft = float(self.point1[0])/self.IMAGE_WIDTH*self.currentWidth + self.topLeftCorner[0]
         newRight = float(self.point2[0])/self.IMAGE_WIDTH*self.currentWidth + self.topLeftCorner[0]
         newBottom = -float(self.point2[1])/self.IMAGE_WIDTH*self.currentWidth + self.topLeftCorner[1]
+        if newLeft > newRight:
+            temp = newLeft
+            newLeft = newRight
+            newRight = temp
         #new width
         self.currentWidth = newRight - newLeft 
         self.topLeftCorner = [newLeft, newBottom + self.currentWidth]
         #the deeper the user goes, the harder the Mandelbrot generator has to check each point
         self.iterations = math.log(90.0/self.currentWidth, 2)*10
 
+
+        
 
         '''
         print newLeft, newRight, newBottom
@@ -108,7 +114,7 @@ class App:
             self.point3 = [event.x, event.y]
             #put a box over the region the user selects
             self.panel.create_rectangle( self.point1[0],
-                                        self.point3[1] - (self.point3[0] - self.point1[0]),
+                                        self.point3[1] - abs(self.point3[0] - self.point1[0]),
                                         self.point3[0],
                                         self.point3[1],
                                         fill="",
