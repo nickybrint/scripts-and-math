@@ -4,7 +4,7 @@ from primeLib import isPrime
 """PrimeSumFinder.py: Prints the prime less than 1000000 that can be written as
 the longest sequence of consecutive primes"""
 
-def loopHelper(startIndex, primes, maxLength, ceiling):
+def generateLongestValidList(startIndex, primes, maxLength, ceiling):
         """generate the longest valid list of primes starting at primes[startIndex]"""
         largestPrimeSum = 0
         sum = 0
@@ -24,6 +24,7 @@ def loopHelper(startIndex, primes, maxLength, ceiling):
 
 
 #generate primes less than ceiling
+print "generating primes..."
 primes = []
 ceiling = 1000000
 for n in range(0, ceiling):
@@ -41,8 +42,8 @@ for startIndex in range(0, len(primes)):
         #get the increase in the max length sum if you had started on primes[n + 1] instead of primes[n]
         nextCost  = primes[startIndex + maxLength] - primes[startIndex]
         #get the sum of the longest sequence of primes stating at startIndex that is less than the ceiling
-        maxLength, sum = loopHelper(startIndex, primes, maxLength, ceiling)
+        maxLength, sum = generateLongestValidList(startIndex, primes, maxLength, ceiling)
         #break condition
         if sum +  nextCost > ceiling:
-                print "The prime less than", ceiling - 1, ",\nwhich can be written as the longest sum of consecutive primes,\nis", sum
+                print "The prime less than", ceiling, ",\nwhich can be written as the longest sum of consecutive primes,\nis", sum
                 break

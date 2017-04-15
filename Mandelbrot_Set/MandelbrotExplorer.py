@@ -142,7 +142,7 @@ class App:
             pass
         self.menu.destroy()
 
-
+print "Loading..."
 #the image displayer
 root = Tk()
 root.title("Mandelbrot Generator")

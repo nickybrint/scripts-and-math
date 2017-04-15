@@ -27,3 +27,4 @@ def getNumbersFromFile(filename):
         primes.append(prime)
     return primes
 
+#generatePrimeList("C:\Users\User 1\Desktop\python\programmingClub\primes.txt", 10000000)

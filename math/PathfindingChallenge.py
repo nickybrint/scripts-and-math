@@ -1,6 +1,6 @@
 #this program uses Dijkstra's Algorithm to find the highest-cost route from row 0 to row 14
 #rules: can only move from node (i, j) to (i+1, j) or (i+1, j+1) (i.e. 'down' the pyramid)
-#if your python installation is good, should print 1074
+#should print 1074 according to all known math
 
 array =[
 [75], #row 0 
