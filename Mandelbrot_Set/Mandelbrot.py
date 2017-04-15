@@ -1,9 +1,8 @@
 from PIL import Image
 
-#MAX_ITERATIONS = 50
-#IMAGE_WIDTH, IMAGE_HEIGHT = 300, 300
-#LEFT_X, BOTTOM_Y = 0.3, 0.025
-#RIGHT_X = 0.3001
+maxiterations = 50
+width, height = 300, 300
+leftx, rightx, bottomy = 0.3, 0.31, 0.025
 
 
 def divergenceTest(c, MAX_ITERATIONS):
@@ -81,11 +80,11 @@ def main(LEFT_X, RIGHT_X, BOTTOM_Y, IMAGE_HEIGHT, IMAGE_WIDTH, MAX_ITERATIONS):
     image = Image.new('RGB', (IMAGE_WIDTH, IMAGE_HEIGHT), 0)
     fillMandelbrot(image, MAX_ITERATIONS, LEFT_X, BOTTOM_Y, RIGHT_X, PIXEL_WIDTH, IMAGE_HEIGHT, IMAGE_WIDTH)
     return image
-    
-'''
-image = main(float(raw_input()), float(raw_input()), float(raw_input()), 300, 300)
-#imageID = doRegistry()
-#image.save('mandelbrot' + str(imageID) + '.gif')
-image.show()
 
-'''
+
+if __name__ == "__main__":
+    image = main(leftx, rightx, bottomy, height, width, maxiterations)
+    imageID = doRegistry()
+    image.save('mandelbrot' + str(imageID) + '.jpg')
+    image.show()
+
