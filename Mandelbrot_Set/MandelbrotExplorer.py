@@ -127,7 +127,10 @@ class App:
 
     def quit(self):
         #destroy both windows
-        self.master.destroy()
+        try:
+            self.master.destroy()
+        except:
+            pass
         self.menu.destroy()
 
 
