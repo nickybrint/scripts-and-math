@@ -2,6 +2,7 @@ from Tkinter import *
 from PIL import Image, ImageTk
 import Mandelbrot
 import math
+import datetime
 
 
 class App:
@@ -11,7 +12,12 @@ class App:
         Sets height automatically to preserve aspect ratio.
     '''
     
-    def __init__(self, master):
+    def __init__(self, master, menu):
+        
+        #store the windows
+        self.master = master
+        self.menu = menu
+        
         #left of zoom selection
         self.point1 = [0, 0]
         #bottom right of zoom selection
@@ -27,10 +33,6 @@ class App:
         #position of frame (0, 0) in graph coordinates
         self.topLeftCorner = [-1.5, 1.5]
 
-        #create the window
-        frame = Frame(master)
-        frame.pack()
-
         #create the drawing area, a 'Canvas'
         self.panel = Canvas(master, width=self.IMAGE_WIDTH, height=self.IMAGE_HEIGHT)
         self.panel.pack()
@@ -42,11 +44,17 @@ class App:
         #draw it on the Canvas
         self.panel.create_image((0, 0), anchor='nw', image=self.photo)
 
-        
+        #set up mouse controls
         master.bind("<Button-1>", self.onClick) #left-mouse click
         master.bind("<ButtonRelease-1>", self.onRelease) #left mouse release
         master.bind("<B1-Motion>", self.drawBox) #left mouse drag
         master.bind("<Button-3>", self.cancel) #right mouse click
+
+        #add buttons to the menu
+        self.button = Button(menu, text="Save to File", command=self.save)
+        self.button.pack(side=LEFT)
+        self.button = Button(menu, text="      Exit      ", command=self.quit)
+        self.button.pack(side=LEFT)
 
 
     def onClick(self, event):
@@ -101,7 +109,7 @@ class App:
                                         point3[1] - (point3[0] - self.point1[0]),
                                         point3[0],
                                         point3[1],
-                                        fill=""
+                                        fill="",
                                         outline="white" )
         
     #on right click
@@ -110,9 +118,23 @@ class App:
         #redraw the background
         self.panel.create_image((0, 0), anchor='nw', image=self.photo)
 
+    def save(self):
+        date_time = datetime.datetime.now().strftime("%H_%M_%m_%d_%y")
+        self.i.save('mandelbrot_' + date_time + '.jpg')
+
+    def quit(self):
+        #destroy both windows
+        self.master.destroy()
+        self.menu.destroy()
 
 
+#the image displayer
 root = Tk()
 root.title("Mandelbrot Generator")
-app = App(root)
+#the menu
+save_button = Tk()
+save_button.title("")
+save_button.geometry('+600+0')
+
+app = App(root, save_button)
 root.mainloop()
