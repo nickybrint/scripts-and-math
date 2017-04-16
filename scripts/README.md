@@ -1,2 +1,2 @@
 # scripts
-hopefully useful scripts
+some neat scripts
