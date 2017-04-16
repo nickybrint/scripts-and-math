@@ -8,7 +8,9 @@ def functionMinimizer():
     '''
     
     file = open("code.py", "w")
-    metric = raw_input("\nEnter the function you want to minimize as a python expression.\nUse single lower-case letters (i.e. 'x', 'a', 'c') as your parameters.\n")
+    metric = raw_input("\nEnter the function you want to minimize as a python expression." +
+                       "\nUse single lower-case letters (i.e. 'x', 'a') as your parameters." +
+                       "\nEx: 2*b + 5 / sin(q)\n")
     rawRange = raw_input("\nEnter the inclusive discrete interval 'a,b' you want to search: ")
     RANGE_MIN = int(rawRange.split(',')[0])
     RANGE_MAX = int(rawRange.split(',')[1]) + 1
@@ -32,7 +34,7 @@ def functionMinimizer():
                 uniqueParameters.append(metric[charIndex])
 
 
-    file.write("def f(list): \n")
+    file.write("from math import *\ndef f(list): \n")
     file.write("\t(")
     for p in uniqueParameters:
         file.write(p + ",")
@@ -67,7 +69,7 @@ def functionMinimizer():
         if currentValue < minValue:
             minValue = currentValue
             minArgs = args
-    print  #new line
+    print '\nThe Minumum:\n'
     for i in range(0, len(uniqueParameters)):
         print uniqueParameters[i], "=", minArgs[i]
     print "f(",
@@ -77,3 +79,4 @@ def functionMinimizer():
 
     
 functionMinimizer()
+raw_input("Press ENTER to exit")

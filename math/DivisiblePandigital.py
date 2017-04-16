@@ -46,3 +46,4 @@ for numberIndex in range(0, len(possiblyValidNumbers)):
             
 print possiblyValidNumbers
 print sum([int(x) for x in possiblyValidNumbers])
+raw_input()

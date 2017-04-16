@@ -1,3 +1,4 @@
+from math import *
 def f(list): 
-	(a,m,e,r,i,c,) = list
-	return a*m*e*r*i*c*a
+	(b,q,) = list
+	return 2*b + 5 / sin(q)

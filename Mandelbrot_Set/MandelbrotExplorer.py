@@ -145,7 +145,7 @@ class App:
 print "Loading..."
 #the image displayer
 root = Tk()
-root.title("Mandelbrot Generator")
+root.title("Mandelbrot Explorer")
 #the menu
 save_button = Tk()
 save_button.title("")

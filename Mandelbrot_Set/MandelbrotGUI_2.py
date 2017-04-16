@@ -101,7 +101,7 @@ class App:
                                         point3[1] - (point3[0] - self.point1[0]),
                                         point3[0],
                                         point3[1],
-                                        fill=""
+                                        fill="",
                                         outline="white" )
         
     #on right click
