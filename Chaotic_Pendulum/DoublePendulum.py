@@ -5,7 +5,7 @@ import time
 
 class App:
 
-    def __init__(self, master):
+    def __init__(self, master, menu):
         '''
         simulates a double pendulum:
         simulation is stable for a long time,
@@ -31,14 +31,25 @@ class App:
         self.ROD2_LENGTH_PIXELS = self.ROD2_LENGTH_METERS * self.METER_SIZE_PIXELS
         self.BALL1_RADIUS = self.BALL1_MASS**(1.0/3.0) * 1.5
         self.BALL2_RADIUS = self.BALL2_MASS**(1.0/3.0) * 1.5
+        self.ARM_COLOR = 'white'
+        self.BALL_COLOR = 'white'
+        self.BACKGROUND_COLOR = '#961414'
+        self.hidden = False
 
-        #initialize the window
-        self.master = master
+        #initialize the display window
+        self.master = master #store the reference
         self.panel = Canvas( master,
                             width=self.WINDOW_WIDTH,
                             height=self.WINDOW_HEIGHT,
-                             bg='#961414')
+                             bg=self.BACKGROUND_COLOR)
         self.panel.pack()
+
+        #initialize the menu window
+        self.menu = menu #store the reference
+        button = Button(self.menu, text="Show/Hide Arms", command=self.changeMode)
+        button.pack(side=LEFT)
+        button = Button(self.menu, text="           Exit           ", command=self.quit)
+        button.pack(side=RIGHT)
 
         #position the rods
         self.theta1 = 0.7853*4 #0.7853 is 45 degrees, in radians
@@ -48,48 +59,49 @@ class App:
         self.alpha1 = 0.0   #radians/second/second
         self.alpha2 = 0.0
         
-        #draw the first pendulum
-        #set the end-point
+        #draw the pendulums
+        #set the first pendulum's end-point
         x_1, y_1 = (self.WINDOW_WIDTH/2 + math.sin(self.theta1)*self.ROD1_LENGTH_PIXELS,
                     self.WINDOW_HEIGHT/2 + math.cos(self.theta1)*self.ROD1_LENGTH_PIXELS
                     )
-        #draw the rod
+        #set the second pendulum's end-point
+        x_2, y_2 = (x_1 + math.sin(self.theta2)*self.ROD2_LENGTH_PIXELS,
+                    y_1 + math.cos(self.theta2)*self.ROD2_LENGTH_PIXELS
+                    )
+        #draw the first arm
         self.line1 = self.panel.create_line(
                 self.WINDOW_WIDTH/2,
                 self.WINDOW_HEIGHT/2,
                 x_1 - self.BALL1_RADIUS,
                 y_1 - self.BALL1_RADIUS,
-                fill='white'
+                fill=self.ARM_COLOR
                 )
-        #draw the weight
-        self.ball1 = self.panel.create_oval(
-                x_1 - self.BALL1_RADIUS,
-                y_1 - self.BALL1_RADIUS,
-                x_1 + self.BALL1_RADIUS,
-                y_1 + self.BALL1_RADIUS,
-                fill='white'
-                )
-        #draw the second pendulum
-        #set the end-point
-        x_2, y_2 = (x_1 + math.sin(self.theta2)*self.ROD2_LENGTH_PIXELS,
-                    y_1 + math.cos(self.theta2)*self.ROD2_LENGTH_PIXELS
-                    )
-        #draw the rod
+
+        #draw the second arm
         self.line2 = self.panel.create_line(
                 x_1 + self.BALL1_RADIUS,
                 y_1 + self.BALL1_RADIUS,
                 x_2 - self.BALL2_RADIUS,
                 y_2 - self.BALL2_RADIUS,
-                fill='white'
+                fill=self.ARM_COLOR
                 )
-        #draw the weight
+        #draw the first ball
+        self.ball1 = self.panel.create_oval(
+                x_1 - self.BALL1_RADIUS,
+                y_1 - self.BALL1_RADIUS,
+                x_1 + self.BALL1_RADIUS,
+                y_1 + self.BALL1_RADIUS,
+                fill=self.BALL_COLOR
+                )
+        #draw the second ball
         self.ball2 = self.panel.create_oval(
                 x_2 - self.BALL2_RADIUS,
                 y_2 - self.BALL2_RADIUS,
                 x_2 + self.BALL2_RADIUS,
                 y_2 + self.BALL2_RADIUS,
-                fill='white'
+                fill=self.BALL_COLOR
                 )
+
 
 
     def draw(self):
@@ -186,16 +198,40 @@ class App:
         #print self.alpha1, self.alpha2, self.omega1, self.omega2, self.theta1, self.theta2
 
 
+    def changeMode(self):
+        if not self.hidden:
+            self.panel.itemconfig(self.line1, fill=self.BACKGROUND_COLOR)
+            self.panel.itemconfig(self.line2, fill=self.BACKGROUND_COLOR)
+            self.panel.itemconfig(self.ball1, fill=self.BACKGROUND_COLOR, outline=self.BACKGROUND_COLOR)
+            self.hidden = True
+        else:
+            self.panel.itemconfig(self.line1, fill=self.ARM_COLOR)
+            self.panel.itemconfig(self.line2, fill=self.ARM_COLOR)
+            self.panel.itemconfig(self.ball1, fill=self.BALL_COLOR, outline=self.BALL_COLOR)
+            self.hidden = False
 
+    def quit(self):
+        #destroy both windows
+        try:
+            self.master.destroy()
+        except:
+            pass
+        self.menu.destroy()
+        
 
 
 root = Tk()
 root.title("Double Pendulum")
-app = App(root)
+menu = Tk()
+menu.title("Options")
+app = App(root, menu)
 while True:
     app.draw()
-    root.update_idletasks()
-    root.update()
+    try:
+        #root.update_idletasks()
+        root.update()
+    except:
+        break
     time.sleep(0.03)
     
 root.mainloop()

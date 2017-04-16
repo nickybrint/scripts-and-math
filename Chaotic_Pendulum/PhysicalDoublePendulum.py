@@ -36,7 +36,7 @@ class App:
         self.panel = Canvas( master,
                             width=self.WINDOW_WIDTH,
                             height=self.WINDOW_HEIGHT,
-                             bg='#E0FFFF')
+                             bg='#50b0e0')
         self.panel.pack()
 
         #position the rods
