@@ -35,6 +35,8 @@ class App:
         self.BALL_COLOR = 'white'
         self.BACKGROUND_COLOR = '#961414'
         self.hidden = False
+        self.dragging = False
+        self.ballClicked = -1
 
         #initialize the display window
         self.master = master #store the reference
@@ -43,6 +45,9 @@ class App:
                             height=self.WINDOW_HEIGHT,
                              bg=self.BACKGROUND_COLOR)
         self.panel.pack()
+        master.bind('<Button-1>', self.onClick)
+        master.bind('<B1-Motion>', self.onDrag)
+        master.bind('<ButtonRelease-1>', self.onRelease)
 
         #initialize the menu window
         self.menu = menu #store the reference
@@ -58,8 +63,9 @@ class App:
         self.omega2 = 0.0
         self.alpha1 = 0.0   #radians/second/second
         self.alpha2 = 0.0
+
         
-        #draw the pendulums
+        #initialize the pendulums
         #set the first pendulum's end-point
         x_1, y_1 = (self.WINDOW_WIDTH/2 + math.sin(self.theta1)*self.ROD1_LENGTH_PIXELS,
                     self.WINDOW_HEIGHT/2 + math.cos(self.theta1)*self.ROD1_LENGTH_PIXELS
@@ -108,7 +114,10 @@ class App:
         '''
             redraw the rods
         '''
-
+        #don't try to move the ball if the user is also trying to move it
+        if self.dragging:
+            return
+        
         #it's not a game, so make dt constant
         dt = 0.03
         '''
@@ -130,14 +139,15 @@ class App:
         L1_OVER_L2 = self.ROD1_LENGTH_METERS / self.ROD2_LENGTH_METERS
         M2_OVER_MTOT = self.BALL2_MASS / (self.BALL1_MASS + self.BALL2_MASS)
 
-        #so solution converges toward actual one
+        #loop so solution converges toward actual one
         for i in range(0, 5):
+
+            #solution to Euler-Lagrange equations
             self.alpha1 = (
                     - M2_OVER_MTOT * L2_OVER_L1 * (COSINE_DIFFERENCE * self.alpha2
                                                    + SINE_DIFFERENCE * self.omega2*self.omega2)
                     - self.GRAVITY * SINE_THETA1 / self.ROD1_LENGTH_METERS
                     )
-            
 
             self.alpha2 = (
                     - L1_OVER_L2 * (COSINE_DIFFERENCE * self.alpha1 - SINE_DIFFERENCE * self.omega1*self.omega1)
@@ -147,7 +157,26 @@ class App:
         self.omega1 += self.alpha1 * dt
         self.omega2 += self.alpha2 * dt
 
-        
+        self.updateCoordinates()
+
+
+    def changeMode(self):
+        if not self.hidden:
+            self.panel.itemconfig(self.line1, fill=self.BACKGROUND_COLOR)
+            self.panel.itemconfig(self.line2, fill=self.BACKGROUND_COLOR)
+            self.panel.itemconfig(self.ball1, fill=self.BACKGROUND_COLOR, outline=self.BACKGROUND_COLOR)
+            self.hidden = True
+        else:
+            self.panel.itemconfig(self.line1, fill=self.ARM_COLOR)
+            self.panel.itemconfig(self.line2, fill=self.ARM_COLOR)
+            self.panel.itemconfig(self.ball1, fill=self.BALL_COLOR, outline=self.BALL_COLOR)
+            self.hidden = False
+            
+
+    def updateCoordinates(self):
+        '''
+            sets the pendulum coordinates from the angle values
+        '''
         #draw the first pendulum
         #set the end-point
         x_1, y_1 = (self.WINDOW_WIDTH/2 + math.sin(self.theta1)*self.ROD1_LENGTH_PIXELS,
@@ -194,22 +223,68 @@ class App:
                 x_2 + self.BALL2_RADIUS,
                 y_2 + self.BALL2_RADIUS
                 )
-        self.panel.update()
-        #print self.alpha1, self.alpha2, self.omega1, self.omega2, self.theta1, self.theta2
+        self.panel.update()        
 
 
-    def changeMode(self):
-        if not self.hidden:
-            self.panel.itemconfig(self.line1, fill=self.BACKGROUND_COLOR)
-            self.panel.itemconfig(self.line2, fill=self.BACKGROUND_COLOR)
-            self.panel.itemconfig(self.ball1, fill=self.BACKGROUND_COLOR, outline=self.BACKGROUND_COLOR)
-            self.hidden = True
-        else:
-            self.panel.itemconfig(self.line1, fill=self.ARM_COLOR)
-            self.panel.itemconfig(self.line2, fill=self.ARM_COLOR)
-            self.panel.itemconfig(self.ball1, fill=self.BALL_COLOR, outline=self.BALL_COLOR)
-            self.hidden = False
+    def onClick(self, event):
+        x_1, y_1 = (self.WINDOW_WIDTH/2 + math.sin(self.theta1)*self.ROD1_LENGTH_PIXELS,
+                    self.WINDOW_HEIGHT/2 + math.cos(self.theta1)*self.ROD1_LENGTH_PIXELS
+                    )
+        #set the second pendulum's end-point
+        x_2, y_2 = (x_1 + math.sin(self.theta2)*self.ROD2_LENGTH_PIXELS,
+                    y_1 + math.cos(self.theta2)*self.ROD2_LENGTH_PIXELS
+                    )
+        
+        #if the user clicked pretty close to one of the balls
+        if abs(event.x - x_1) < 20 and abs(event.y - y_1) < 20:
+            self.dragging = True
+            self.ballClicked = 1
+            self.omega1 = 0.0
+            self.alpha1 = 0.0
+            self.alpha2 = 0.0
+            self.omega2 = 0.0
+        if abs(event.x - x_2) < 20 and abs(event.y - y_2) < 20:
+            self.dragging = True
+            self.ballClicked = 2
+            self.omega1 = 0.0
+            self.alpha1 = 0.0
+            self.alpha2 = 0.0
+            self.omega2 = 0.0
+        
+    def onDrag(self, event):
 
+        #if user did not click on a ball, ignore their click
+        if not self.dragging:
+            return
+
+        #if user clicked on first ball
+        if self.ballClicked == 1:
+            #move ball to pointer location
+            if event.y - self.WINDOW_HEIGHT/2 > 0:
+                self.theta1 = math.atan(float(event.x  - self.WINDOW_HEIGHT/2) / (0.001 + float(event.y - self.WINDOW_HEIGHT/2)))
+            else:
+                self.theta1 = -0.7853*4 + math.atan(float(event.x  - self.WINDOW_HEIGHT/2) / (0.001 + float(event.y - self.WINDOW_HEIGHT/2)))
+
+        #if user clicked on second ball
+        if self.ballClicked == 2:
+            #end of the first pendulum
+            x_1, y_1 = (self.WINDOW_WIDTH/2 + math.sin(self.theta1)*self.ROD1_LENGTH_PIXELS,
+                        self.WINDOW_HEIGHT/2 + math.cos(self.theta1)*self.ROD1_LENGTH_PIXELS
+                        )
+            #move ball to pointer location
+            if event.y - y_1 > 0:
+                self.theta2 = math.atan(float(event.x - x_1) / float(event.y - y_1) )
+            else:
+                self.theta2 = -0.7853*4 + math.atan(float(event.x - x_1) / float(event.y - y_1) )
+
+        self.updateCoordinates()
+
+       
+    def onRelease(self, event):
+        self.dragging = False
+
+
+            
     def quit(self):
         #destroy both windows
         try:
