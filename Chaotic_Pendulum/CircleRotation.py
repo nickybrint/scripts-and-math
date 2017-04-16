@@ -39,12 +39,12 @@ class App:
                                 image=self.bg
                                 )
         #draw the rod
-        self.line = self.panel.create_line(
-                self.WINDOW_WIDTH/2,
-                self.WINDOW_HEIGHT/2,
+        self.line = self.panel.create_oval(
+                self.WINDOW_WIDTH/2 - math.sin(self.theta)*self.ROD_LENGTH_PIXELS,
+                self.WINDOW_HEIGHT/2 - math.cos(self.theta)*self.ROD_LENGTH_PIXELS,
                 self.WINDOW_WIDTH/2 + math.sin(self.theta)*self.ROD_LENGTH_PIXELS,
                 self.WINDOW_HEIGHT/2 + math.cos(self.theta)*self.ROD_LENGTH_PIXELS,
-                width=10,
+                width=20,
                 fill='white'
                         )           
 
@@ -59,8 +59,8 @@ class App:
         self.omega += 1.5 * self.GRAVITY * math.sin(self.theta) / self.ROD_LENGTH_METERS * dt
         self.panel.coords(
                 self.line,
-                self.WINDOW_WIDTH/2,
-                self.WINDOW_HEIGHT/2,
+                self.WINDOW_WIDTH/2 - math.sin(self.theta)*self.ROD_LENGTH_PIXELS,
+                self.WINDOW_HEIGHT/2 - math.cos(self.theta)*self.ROD_LENGTH_PIXELS,
                 self.WINDOW_WIDTH/2 + math.sin(self.theta)*self.ROD_LENGTH_PIXELS,
                 self.WINDOW_HEIGHT/2 + math.cos(self.theta)*self.ROD_LENGTH_PIXELS,
                         )

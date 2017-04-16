@@ -6,12 +6,20 @@ import time
 class App:
 
     def __init__(self, master):
+        '''
+        simulates a double pendulum:
+        simulation is stable for a long time,
+        but after a while, it mysteriously loses/gains energy
+        depending on how many times I loop the
+        two alpha calculations (they depend on each other).
+        (floating-point errors?)
+    '''
 
         #initialize physics settings
         self.now = lambda: int(time.time() * 1000)
         self.lastTime = self.now()
         self.ROD1_LENGTH_METERS = 1.5
-        self.ROD2_LENGTH_METERS = 3.0
+        self.ROD2_LENGTH_METERS = 2.5
         self.GRAVITY = 10
         self.BALL1_MASS = 200.0
         self.BALL2_MASS = 100.0
@@ -21,19 +29,20 @@ class App:
         self.METER_SIZE_PIXELS = 50
         self.ROD1_LENGTH_PIXELS = self.ROD1_LENGTH_METERS * self.METER_SIZE_PIXELS
         self.ROD2_LENGTH_PIXELS = self.ROD2_LENGTH_METERS * self.METER_SIZE_PIXELS
-        self.BALL1_RADIUS = self.BALL1_MASS * 0.1
-        self.BALL2_RADIUS = self.BALL2_MASS * 0.1
+        self.BALL1_RADIUS = self.BALL1_MASS**(1.0/3.0) * 1.5
+        self.BALL2_RADIUS = self.BALL2_MASS**(1.0/3.0) * 1.5
 
         #initialize the window
         self.master = master
         self.panel = Canvas( master,
                             width=self.WINDOW_WIDTH,
-                            height=self.WINDOW_HEIGHT )
+                            height=self.WINDOW_HEIGHT,
+                             bg='#961414')
         self.panel.pack()
 
         #position the rods
-        self.theta1 = 0.7853*3.95 #45 degrees, in radians
-        self.theta2 = 0.7853*2
+        self.theta1 = 0.7853*4 #0.7853 is 45 degrees, in radians
+        self.theta2 = 0.7853*4
         self.omega1 = 0.0    #radians/second
         self.omega2 = 0.0
         self.alpha1 = 0.0   #radians/second/second
@@ -49,7 +58,8 @@ class App:
                 self.WINDOW_WIDTH/2,
                 self.WINDOW_HEIGHT/2,
                 x_1 - self.BALL1_RADIUS,
-                y_1 - self.BALL1_RADIUS
+                y_1 - self.BALL1_RADIUS,
+                fill='white'
                 )
         #draw the weight
         self.ball1 = self.panel.create_oval(
@@ -57,7 +67,7 @@ class App:
                 y_1 - self.BALL1_RADIUS,
                 x_1 + self.BALL1_RADIUS,
                 y_1 + self.BALL1_RADIUS,
-                fill='black'
+                fill='white'
                 )
         #draw the second pendulum
         #set the end-point
@@ -69,7 +79,8 @@ class App:
                 x_1 + self.BALL1_RADIUS,
                 y_1 + self.BALL1_RADIUS,
                 x_2 - self.BALL2_RADIUS,
-                y_2 - self.BALL2_RADIUS
+                y_2 - self.BALL2_RADIUS,
+                fill='white'
                 )
         #draw the weight
         self.ball2 = self.panel.create_oval(
@@ -77,7 +88,7 @@ class App:
                 y_2 - self.BALL2_RADIUS,
                 x_2 + self.BALL2_RADIUS,
                 y_2 + self.BALL2_RADIUS,
-                fill='black'
+                fill='white'
                 )
 
 
@@ -108,9 +119,10 @@ class App:
         M2_OVER_MTOT = self.BALL2_MASS / (self.BALL1_MASS + self.BALL2_MASS)
 
         #so solution converges toward actual one
-        for i in range(0, 3):
+        for i in range(0, 5):
             self.alpha1 = (
-                    - M2_OVER_MTOT * L2_OVER_L1 * (COSINE_DIFFERENCE * self.alpha2 + SINE_DIFFERENCE * self.omega2*self.omega2)
+                    - M2_OVER_MTOT * L2_OVER_L1 * (COSINE_DIFFERENCE * self.alpha2
+                                                   + SINE_DIFFERENCE * self.omega2*self.omega2)
                     - self.GRAVITY * SINE_THETA1 / self.ROD1_LENGTH_METERS
                     )
             
