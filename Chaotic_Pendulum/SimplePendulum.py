@@ -35,8 +35,10 @@ class App:
                 self.WINDOW_HEIGHT/2,
                 self.WINDOW_WIDTH/2 + math.sin(self.theta)*self.ROD_LENGTH_PIXELS,
                 self.WINDOW_HEIGHT/2 + math.cos(self.theta)*self.ROD_LENGTH_PIXELS,
-                width=10
+                width=6
                         )
+
+            
 
 
     def draw(self):
@@ -54,6 +56,7 @@ class App:
                 self.WINDOW_WIDTH/2 + math.sin(self.theta)*self.ROD_LENGTH_PIXELS,
                 self.WINDOW_HEIGHT/2 + math.cos(self.theta)*self.ROD_LENGTH_PIXELS
                         )
+
         self.panel.update()
         self.lastTime = self.now()
 
