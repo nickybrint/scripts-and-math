@@ -77,6 +77,6 @@ def functionMinimizer():
         print str(a) + ",",
     print ") = " + str(minValue)
 
-    
-functionMinimizer()
-raw_input("Press ENTER to exit")
+if __name__ == '__main__':
+    functionMinimizer()
+    raw_input("Press ENTER to exit")
