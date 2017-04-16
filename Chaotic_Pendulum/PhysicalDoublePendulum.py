@@ -5,8 +5,10 @@ import time
 
 class App:
     '''
-        simulates a physical double pendulum:
-            i.e., one made of two solid rods
+        simulates a physical double pendulum for a more satisfying chaotic experience
+            (i.e. the rods are solid)
+
+        bug:
         simulation is stable for a long time,
         but after a while, it mysteriously gains energy (floating-point errors?)
     '''
@@ -16,6 +18,7 @@ class App:
         #initialize physics settings
         self.now = lambda: int(time.time() * 1000)
         self.lastTime = self.now()
+        #these are the initial conditions you want to mess with
         self.ROD1_LENGTH_METERS = 1.0
         self.ROD2_LENGTH_METERS = 0.5
         self.GRAVITY = 10
@@ -23,22 +26,21 @@ class App:
         self.BAR2_MASS = 100.0
 
         #initialize display settings
-        self.WINDOW_WIDTH, self.WINDOW_HEIGHT = 600, 600
-        self.METER_SIZE_PIXELS = 200
+        self.WINDOW_WIDTH, self.WINDOW_HEIGHT = 600, 600 #pixels
+        self.METER_SIZE_PIXELS = 190 #pixels/meter
         self.ROD1_LENGTH_PIXELS = self.ROD1_LENGTH_METERS * self.METER_SIZE_PIXELS
         self.ROD2_LENGTH_PIXELS = self.ROD2_LENGTH_METERS * self.METER_SIZE_PIXELS
-        self.BALL1_RADIUS = self.BAR1_MASS * 0.1
-        self.BALL2_RADIUS = self.BAR2_MASS * 0.1
 
         #initialize the window
         self.master = master
         self.panel = Canvas( master,
                             width=self.WINDOW_WIDTH,
                             height=self.WINDOW_HEIGHT,
-                             bg='black')
+                             bg='#E0FFFF')
         self.panel.pack()
 
         #position the rods
+        #these are the initial conditions you want to mess with
         self.theta1 = 0.7853*3.95 #45 degrees, in radians
         self.theta2 = 0.7853*3.95
         self.omega1 = 0.0    #radians/second
@@ -58,11 +60,10 @@ class App:
                 x_1,
                 y_1,
                 width=6,
-                fill='green'
+                fill='#2f4f4f'
                 )
 
         #draw the second pendulum
-
         #set the end-point
         x_2, y_2 = (x_1 + math.sin(self.theta2)*self.ROD2_LENGTH_PIXELS,
                     y_1 + math.cos(self.theta2)*self.ROD2_LENGTH_PIXELS
@@ -74,7 +75,7 @@ class App:
                 x_2,
                 y_2,
                 width=6,
-                fill='green'
+                fill='#2f4f4f'
                 )
 
 
@@ -106,14 +107,14 @@ class App:
         L1_OVER_L2 = self.ROD1_LENGTH_METERS / self.ROD2_LENGTH_METERS
         MTOT = (self.BAR1_MASS + 3*self.BAR2_MASS)
 
-        #so solution converges toward actual one
+        #loop so solution converges toward actual one
         for i in range(0, 100):
+            #solution to Euler-Lagrange equations
             self.alpha1 = (
-                    -0.5 / MTOT * (
-                        L2_OVER_L1 * self.BAR2_MASS * ( self.alpha2 * COSINE_DIFFERENCE
-                                       + 2 * self.omega2*self.omega2 * SINE_DIFFERENCE
-                                                         )
-                        + (self.GRAVITY * (self.BAR1_MASS + 2*self.BAR2_MASS) * SINE_THETA1) / self.ROD1_LENGTH_METERS )
+                        -0.5 / MTOT * (
+                        L2_OVER_L1 * self.BAR2_MASS * (self.alpha2 * COSINE_DIFFERENCE + 2*self.omega2*self.omega2 * SINE_DIFFERENCE)
+                        + self.GRAVITY * SINE_THETA1 * (self.BAR1_MASS + 2*self.BAR2_MASS) / self.ROD1_LENGTH_METERS
+                        )
                     )
             
 
@@ -121,7 +122,8 @@ class App:
                     - 1 / 3.0 * L1_OVER_L2 * (COSINE_DIFFERENCE * self.alpha1 - SINE_DIFFERENCE * self.omega1*self.omega1)
                     - 0.5 * self.GRAVITY * SINE_THETA2 / self.ROD2_LENGTH_METERS
                     )
-        
+
+        #update velocities
         self.omega1 += self.alpha1 * dt
         self.omega2 += self.alpha2 * dt
 
@@ -132,7 +134,6 @@ class App:
                     self.WINDOW_HEIGHT/2 + math.cos(self.theta1)*self.ROD1_LENGTH_PIXELS
                     )
         #draw the rod
-        
         self.panel.coords(
                 self.line1,
                 self.WINDOW_WIDTH/2,
@@ -147,7 +148,6 @@ class App:
                     y_1 + math.cos(self.theta2)*self.ROD2_LENGTH_PIXELS
                     )
         #draw the rod
-        
         self.panel.coords(
                 self.line2,
                 x_1,
@@ -168,8 +168,11 @@ root.title("Double Physical Pendulum")
 app = App(root)
 while True:
     app.draw()
-    root.update_idletasks()
-    root.update()
+    try:
+        #root.update_idletasks()
+        root.update()
+    except:
+        break
     time.sleep(0.03)
     
 root.mainloop()
