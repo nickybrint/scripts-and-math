@@ -1,4 +1,4 @@
-# Chaotic_Pendulums
+# Chaotic_Pendulum
 Simulations of a few sometimes chaotic pendulum-based scenarios.
 These are pretty stable, but eventually either converge or diverge due to rounding errors.
 (There is a thing called the Runge-Kutta method, which greatly reduces the rounding errors. Perhaps I will implement it in the future.)
