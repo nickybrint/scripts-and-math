@@ -5,15 +5,18 @@ width, height = 300, 300
 leftx, rightx, bottomy = 0.3, 0.31, 0.025
 
 
-def divergenceTest(c, MAX_ITERATIONS):
+def divergenceTest(complex_number_tuple, MAX_ITERATIONS):
 
     '''
         check if a point [a, b] is in the mandelbrot set
-        return the number of iterations it took to diverge
-        @param c = [a, b], a complex number a + bi
+        return the number of iterations it took to go past an arbitrary number (say 4)
+        if it didn't diverge past 4, return the max iterations
+        
+        Function Arguments:
+        complex_number_tuple = [a, b] or (a, b), a complex number a + bi
     '''
-    
-    z = [0, 0]
+    c = complex_number_tuple
+    z = [0, 0] #for the mandelbrot set, z_0 = 0 + 0i
     iterations = 0
     while abs(z[0]) < 4 and abs(z[1]) < 4 and iterations < MAX_ITERATIONS:
         z = [z[0]**2 - z[1]**2 + c[0], 2*z[0]*z[1] + c[1]]
@@ -47,7 +50,9 @@ def doRegistry():
     '''
         reads from registry.txt, which contains the last image id
         returns last image id + 1, which is the current image id
-        increments the id in registry.txt
+        increments the id in registry.txt.
+        
+        this allows easy saving of the mandelbrot images
     '''
     f = open('registry.txt', 'w+')
     lines = f.readlines()
@@ -66,7 +71,7 @@ def doRegistry():
 
 def main(LEFT_X, RIGHT_X, BOTTOM_Y, IMAGE_HEIGHT, IMAGE_WIDTH, MAX_ITERATIONS):
     '''
-        returns a png of the mangelbrot set
+        returns a png of the mandelbrot set in the given bounds
     '''
     PIXEL_WIDTH = (RIGHT_X - LEFT_X)/IMAGE_WIDTH
     image = Image.new('RGB', (IMAGE_WIDTH, IMAGE_HEIGHT), 0)
