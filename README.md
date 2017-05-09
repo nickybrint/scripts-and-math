@@ -8,6 +8,6 @@ A python script that minimizes a function by writing *another python script*. Co
 ### analyzeABC.py
 The solution to a Capture the Flag, where the flag was hidden in abc.txt.
 ### DivisiblePandigital.py
-Finds all 0 to 9 pandigital numbers such that 17 divides d8d9d10, 13|d7d8d9, 11|d6d7d8, etc.
+Finds all 0 to 9 pandigital numbers such that 17 divides <digit8><digit9><digit10>, 13|d7d8d9, 11|d6d7d8, etc.
 ### 
 ex: 4160357289 ==> 17 divides 289, 13 divides 728, 11|572, 7|357, 5|035, 3|603, and 2|160
