@@ -1,6 +1,6 @@
 # scripts_and_math
 After I decided I wanted to do CS, these are some of the things I played around with for a couple of months.
-## Mandelbrot_Set
+## Mandelbrot Set
 ### *MandelbrotExplorer.py*
 A UI where the user can zoom in on the Mandelbrot Set and save an image to file.
 ### *Mandelbrot.py*
@@ -11,8 +11,8 @@ Some cool images I generated with these.
 ### _XKCDWallpaper*.py_
 A hack to easily change your windows wallpaper. Downloads an XKCD comic, (puts it on top of a neat gradient background), and saves it in your C:/Users/Public folder twice. All you have to do is set your wallpaper to slideshow between those two images, and then if you run the script again, it changes the images, and when the slideshow changes, your wallpaper changes.
 ### *FunctionMinimizer.py*
-A python script that minimizes a function by writing *another python script*. Completely useless.
-## Chaotic_Pendulum
+A python script that minimizes a function by writing *another python script*. I was curious whether python could do this, and the answer is yes!
+## Chaotic Pendulum
 ### *SimplePendulum.py*
 A simulation of a simple pendulum.
 ### *DoublePendulum.py*
