@@ -1,6 +1,6 @@
 # scripts_and_math
 After I decided I wanted to do CS, these are some of the things I played around with for a couple of months.
-###
+
 ## Mandelbrot_Set
 ### *MandelbrotExplorer.py*
 A UI where the user can zoom in on the Mandelbrot Set and save an image to file.
@@ -8,13 +8,13 @@ A UI where the user can zoom in on the Mandelbrot Set and save an image to file.
 Generates an image of the Mandelbrot set and saves it to file with a unique filename.
 ### *./img*
 Some cool images I generated with these.
-###
+
 ## scripts
 ### _XKCDWallpaper*.py_
 A hack to easily change your windows wallpaper. Downloads an XKCD comic, (puts it on top of a neat gradient background), and saves it in your C:/Users/Public folder twice. All you have to do is set your wallpaper to slideshow between those two images, and then if you run the script again, it changes the images, and when the slideshow changes, your wallpaper changes.
 ### *FunctionMinimizer.py*
 A python script that minimizes a function by writing *another python script*. I was curious whether python could do this, and the answer is yes!
-###
+
 ## Chaotic_Pendulum
 ### *SimplePendulum.py*
 A simulation of a simple pendulum.
@@ -25,6 +25,7 @@ A simulation of a 'physical' double pendulum (i.e. with solid bars)
 ### *CircleRotation.py*
 What happens if you replace a line with a circle.
 ###
+
 ## math
 ### *analyzeABC.py*
 The solution to a Capture the Flag. Generates flag.png from abc.txt.
@@ -42,4 +43,3 @@ Calculates the day of the week, the number of days since 3-10-17, and what the m
 Generates all permutations of a entire set and all n-combinations of a set.
 ### *primeLib.py*
 Checks if a number is prime, saves a list of primes less than n to file, and reads such a file into a list.
-
