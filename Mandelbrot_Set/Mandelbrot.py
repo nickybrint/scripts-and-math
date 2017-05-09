@@ -12,14 +12,6 @@ def divergenceTest(c, MAX_ITERATIONS):
         return the number of iterations it took to diverge
         @param c = [a, b], a complex number a + bi
     '''
-
-    
-    """
-    if abs(c[0]) < 0.005 or abs(c[1]) < 0.005:
-        return -2
-    if c[0] % 0.1 < 0.005 or c[1] % 0.1 < 0.005:
-        return -1
-    """
     
     z = [0, 0]
     iterations = 0
