@@ -1,10 +1,16 @@
 import time
-def getDayOfWeek(date): #date is [d,m,y] (ints)
-    #print "Today's Date: " + str(date[1]) + "/" + str(date[0]) + "/" + str(date[2])
-    months = [31,28,31,30,31,30,31,31,30,31,30,31]
+def getDayOfWeek(date):
+    """Returns the day of the week of the input
+    
+    Parameter:
+    date = [day, month, 2-digit year]
+    ex: March 10, 2017 --> [10, 3, 17]
+    """
+
+    months = [31,28,31,30,31,30,31,31,30,31,30,31] #months of THIS year
+    
     if date[2] % 4 == 0 and (date[2] % 100 != 0 or date[2] % 400 == 0):
-        months[1] = 29
-    #1/1/2000 was a saturday
+        months[1] = 29    
     numLeapsSince = (date[2] / 4) + 1 #number of leap februarys since 1/1/2000
     weekShift = date[2] + numLeapsSince #weekShift for january first of this year
     for i in range(0, len(months)): #weekshift for first of the month
@@ -13,11 +19,21 @@ def getDayOfWeek(date): #date is [d,m,y] (ints)
         weekShift += months[i]
     weekShift += date[0] - 1 #weekshift for today
     days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    #print "Day of Week: " + days[(6 + weekShift) % 7]
+
+    #[1, 1, 00] was a saturday
     return (6 + weekShift) % 7
 
-def getDaysSince(date): #date formate is [d,m,y] (ints)
+def getDaysSince(date):
+    """Returns the number of days since March 10, 2017
+    
+    Parameter:
+    date = [day, month, 2-digit year]
+    ex: March 10, 2017 --> [10, 3, 17]
+    """
+    
     months = [31,28,31,30,31,30,31,31,30,31,30,31]
+    
+    #calculate the number of days since [1, 1, 00]
     if date[2] % 4 == 0 and (date[2] % 100 != 0 or date[2] % 400 == 0):
         months[1] = 29
     numLeapsSince = (date[2] / 4) + 1 #number of leap februarys since 1/1/2000
@@ -27,11 +43,13 @@ def getDaysSince(date): #date formate is [d,m,y] (ints)
             break
         daysSince += months[i]
     daysSince += date[0] - 1
-    #XKCD 1809 pub: 3/10/17
-    return daysSince - 6278
+    
+    #XKCD 1809 pub: [10, 3, 17], 6278 days after [1, 1, 00]
+    return daysSince - 6278 
 
 def howManyXKCDs():
-    #XKCD 1809 published friday 3/10/17
+    """Returns the most recent XKCD number. (XKCD is only published on Monday, Wednesday, and Friday)"""
+    #XKCD 1809 was published Friday, March 10, 2017
     date = [int(time.strftime("%d")),int(time.strftime("%m")),int(time.strftime("%y"))]
     daysSince = getDaysSince(date)
     dayOfWeek = getDayOfWeek(date)
@@ -39,6 +57,6 @@ def howManyXKCDs():
     numXKCDs += (dayOfWeek + 1) / 2
     return numXKCDs + 1809
     
-
-#print "XKCD Number is " + str(howManyXKCDs())
+if __name__ == "__main__":
+    print "XKCD Number is " + str(howManyXKCDs())
     
