@@ -1,5 +1,5 @@
 # scripts_and_math
-Some scripts and some math problems I worked on.
+After I decided I wanted to do CS, these are some of the things I played around with for a couple of months.
 ## scripts
 ### _XKCDWallpaper*.py_
 A hack to easily change your windows wallpaper. Downloads an XKCD comic, (puts it on top of a neat gradient background), and saves it in your C:/Users/Public folder twice. All you have to do is set your wallpaper to slideshow between those two images, and then if you run the script again, it changes the images, and when the slideshow changes, your wallpaper changes.
@@ -37,4 +37,4 @@ A draggable simulation of a double pendulum. (This is how I learned about the La
 ### *PhysicalDoublePendulum.py*
 A simulation of a 'physical' double pendulum (i.e. with solid bars)
 ### *CircleRotation.py*
-What happens if you replace the simple pendulum with a circle.
+What happens if you replace a line with a circle.
