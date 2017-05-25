@@ -1,5 +1,5 @@
 # Chaotic_Pendulum
-Simulations of a few sometimes chaotic pendulum-based scenarios.
+Simulations of a few sometimes chaotic pendulum-based scenarios. Uses Tkinter (GUI library).
 These are pretty stable, but eventually either converge or diverge due to rounding errors.
 (There is a thing called the Runge-Kutta method (basically a complicated formula), which greatly reduces the rounding errors. I might implement it in the future.)
 
