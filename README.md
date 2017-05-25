@@ -1,5 +1,6 @@
 # scripts_and_math
-After I decided I wanted to do CS, these are some of the things I played around with for a couple of months.
+
+These are some of the things I played around with after I decided I wanted to do CS.
 
 ## Mandelbrot_Set
 #### MandelbrotExplorer.py
