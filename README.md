@@ -1,7 +1,4 @@
 # scripts_and_math
-
-These are some of the things I played around with after I decided I wanted to do CS.
-
 ## scripts
 #### XKCDWallpaper*.py
 A hack to automatically change your windows wallpaper. Downloads an XKCD comic, (puts it on top of a neat gradient background), and saves it in your C:/Users/Public folder twice. All you have to do is set your wallpaper to slideshow between those two images, and then if you run the script again, it changes the images, and when the slideshow changes, your wallpaper changes.
