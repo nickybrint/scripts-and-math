@@ -1,5 +1,5 @@
 # scripts_and_math
-## math
+#### math
 My solutions to math/coding problems.
-## scripts
+#### scripts
 Some other things I wrote.
