@@ -27,8 +27,7 @@ Solution (brute-force recursive algorithm):
         polygonal numbers that "fit" after it.
     c. Continue in this way until a valid match is found.
 
-(Note: We are finding a cycle, so it does not matter
-that we start with triangular numbers)
+(It doesn't matter that we start with triangular numbers)
 
 """
 
