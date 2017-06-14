@@ -13,11 +13,5 @@ Uses Djikstra's Algoriithm to find the highest-valued path through a triangle of
 Uses recursion to find a 6-cycle of 4-digit polygonal numbers (numbers that can be represented as dots arranged in the shape of a regular polygon) such that each number's last two digits are the first two digits of the next number.
 #### PrimeSumFinder.py
 Prints the prime less than 1,000,000 that can be written as the longest sequence of consecutive primes.
-#### calendarLib.py
-Calculates the day of the week, the number of days since 3-10-17, and what the most recent XKCD comic number is.
-#### permLib.py
-Generates all permutations of a entire set and all n-combinations of a set.
-#### primeLib.py
-Checks if a number is prime, saves a list of primes less than n to file, and reads such a file into a list.
 #### TotientPermutation.py
 Minimizes n/totient(n), on n where (n, totient(n)) are permutations of the same digits.
