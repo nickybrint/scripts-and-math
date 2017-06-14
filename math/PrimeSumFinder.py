@@ -1,5 +1,14 @@
-#!/usr/bin/env python
-from primeLib import isPrime
+import math
+
+def isPrime(n):
+    """Returns whether a number n is prime"""
+    if n < 2:
+        return False
+    for i in range(2, int(math.sqrt(n) + 1)):
+        if n % i == 0:
+            return False
+    return True
+
 
 """PrimeSumFinder.py: Prints the prime less than 1000000 that can be written as
 the longest sequence of consecutive primes"""
