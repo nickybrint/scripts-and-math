@@ -8,10 +8,18 @@ triangle = []
 source = open("triangle.txt")
 lines = source.readlines()
 newlines = []
+
 for line in lines:
+    
+    #strip the newlines (for some reason there are two per line??)
     line = line.strip("\n")
+    
+    #split the line by spaces and turn it into a int list
     line = [int(number) for number in line.split(" ")]
-    triangle.append(line)
+    
+    #it is now correctly formatted for the rest of the code
+    triangle.append(line) 
+    
 print "Working..."
 
 
