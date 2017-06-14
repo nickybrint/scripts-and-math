@@ -1,5 +1,5 @@
 """
-Uses Dijkstra's Algorithm to find the highest-cost route through "triangle.txt"
+Implements a modified Dijkstra's Algorithm to find the highest-cost route through "triangle.txt"
 Rules: can only move from node (i, j) to (i+1, j) or (i+1, j+1) (i.e. 'down' the triangle)
 
 """
