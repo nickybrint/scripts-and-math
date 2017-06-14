@@ -19,3 +19,5 @@ Calculates the day of the week, the number of days since 3-10-17, and what the m
 Generates all permutations of a entire set and all n-combinations of a set.
 #### primeLib.py
 Checks if a number is prime, saves a list of primes less than n to file, and reads such a file into a list.
+#### TotientPermutation.py
+Minimizes n/totient(n), on n where (n, totient(n)) are permutations of the same digits.
