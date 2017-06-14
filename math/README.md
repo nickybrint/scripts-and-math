@@ -1,6 +1,8 @@
 # math
 #### analyzeABC.py
 The solution to a Capture the Flag. Generates flag.png from abc.txt.
+#### ContinuedFractionPeriods.py
+Finds the number of periodic continued fractions of sqrt(n) that have an odd period.
 #### DivisiblePandigital.py
 Finds all 0 to 9 pandigital numbers such that 17 (the 7th prime) divides (digit8),(digit9),(digit10) 13|d7d8d9, 11|d6d7d8, etc.
 
