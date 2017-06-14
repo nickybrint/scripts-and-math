@@ -1,5 +1,8 @@
-import math
+"""PrimeSumFinder.py: Prints the prime less than 1000000 that can be written as
+the longest sequence of consecutive primes"""
 
+
+import math
 def isPrime(n):
     """Returns whether a number n is prime"""
     if n < 2:
@@ -9,9 +12,6 @@ def isPrime(n):
             return False
     return True
 
-
-"""PrimeSumFinder.py: Prints the prime less than 1000000 that can be written as
-the longest sequence of consecutive primes"""
 
 def generateLongestValidList(startIndex, primes, maxLength, ceiling):
         """generate the longest valid list of primes starting at primes[startIndex]"""
