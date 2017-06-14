@@ -18,16 +18,17 @@ Definitions:
 - heptagonal      lambda x: x*(5*x - 3)/2
 - octagonal       lambda x: x*(3*x - 2)
 
-Solution (brute-force recursive algorithm):
+Solution:
 1. Generate all the 4-digit polygon numbers (there are less than 400)
 2. For each triangular number,
     a. Find all non-triangular polygonal numbers with first two digits
         equal to the triangular number's last two digits.
     b. For each of these numbers, find all "previously-unused-based"
         polygonal numbers that "fit" after it.
-    c. Continue in this way until a valid match is found.
+    c. Repeat step 2 for all of the found numbers, and continue to
+        recurse until a complete set is found.
 
-(It doesn't matter that we start with triangular numbers)
+(Note: It doesn't matter that we start with triangular numbers)
 
 """
 
