@@ -1,8 +1,10 @@
-#this program uses Dijkstra's Algorithm to find the highest-cost route from row 0 to row 14
-#rules: can only move from node (i, j) to (i+1, j) or (i+1, j+1) (i.e. 'down' the pyramid)
-#should print 1074 according to all known math
+"""
+Uses Dijkstra's Algorithm to find the highest-cost route from row 0 to row 14
+Rules: can only move from node (i, j) to (i+1, j) or (i+1, j+1) (i.e. 'down' the triangle)
 
-array =[
+"""
+
+triangle =[
 [75], #row 0 
 [95, 64], 
 [17, 47, 82], 
@@ -19,89 +21,69 @@ array =[
 [63, 66, 4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31], 
 [4, 62, 98, 27, 23, 9, 70, 98, 73, 93, 38, 53, 60, 4, 23]] #row 14
 
-#invert each element in the array (99 is max)
+
+ARBITRARILY_LARGE_NUMBER = 1000000
+TRIANGLE_MAX = 1000 # a number larger than every number in 'triangle'
+
+#invert each element in the triangle by subtracting it from TRIANGLE_MAX
 #this is so the algorithm, in finding the lowest cost path, will actually find the highest cost path
-for i in range(0,len(array)):
-    for j in range(0,len(array[i])):
-        array[i][j] =  99 - array[i][j]
-
-#this is where the current minimum distance to each point will be stored
-distances =[
-[[]],
-[[],[]],
-[[],[],[]],
-[[],[],[],[]],
-[[],[],[],[],[]],
-[[],[],[],[],[],[]],
-[[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]]
+for row in triangle:
+    for i, term in enumerate(row):
+        row[i] =  TRIANGLE_MAX - row[i]
 
 
-#this is where the lowest-cost path to each considered point will be stored
-paths = [
-[[]],
-[[],[]],
-[[],[],[]],
-[[],[],[],[]],
-[[],[],[],[],[]],
-[[],[],[],[],[],[]],
-[[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]]
+#make a copy of 'triangle' but in the place of every number, put an empty list
+#we will store the current minimum distance to each point here
+path_lengths = [[ [] for number in row] for row in triangle]
 
-#initialize distance storage. make the starting node of value 24 (99 - 75) and the other nodes of arbitrarily high cost
-distances[0][0] = 99-75
-for i in range(1, len(distances)):
-    for j in range(0, len(distances[i])):
-        distances[i][j] =  1000000
+#make another copy to store the lowest-cost path to each considered point
+paths = [[ [] for number in row] for row in triangle]
+
+
+# initialize distance storage. make the starting node of distance triangle[0][0],
+# and the other nodes of arbitrarily high distance
+for row in path_lengths:
+    for i, term in enumerate(row):
+        row[i] = ARBITRARILY_LARGE_NUMBER
+path_lengths[0][0] = triangle[0][0]
 
 #create a list of unvisited nodes
-unvisited = [(i, j) for i in range(0, len(distances)) for j in range(0,i + 1)]
+unvisited = [(i, j) for i in range(0, len(path_lengths)) for j in range(0, i+1)]
+
 
 #'row' and 'col' are the coordinates of the current node
 row = 0
 col = 0
+
+#until at the bottom, give the total cost to travel from the current node to all adjacent nodes
+#there are only two adjacent nodes for every node (except those on final row have none)
+
 while row < 14:
-    #until at the bottom, give the total cost to travel from the current node to all adjacent nodes
-    #there are only two adjacent nodes for every node (except those on final row have none)
     
-    if distances[row][col] + array[row+1][col] < distances[row+1][col]:
-        distances[row+1][col] = distances[row][col] + array[row+1][col]
-            #replace the node's path with the lower-cost path
-        paths[row+1][col] = paths[row][col] + [99 - array[row][col]]
-            #paths[row][col] is path to current node, 100-array[row][col] is name of current node
-            #i.e., the path to the next node is the path to the current node, plus the current node
+    #if the path to either of the adjacent nodes is shorter than a previous minimum,
+    #replace the node's path and length with that of the lower-cost path,
+    #and add the node to the end
+    if path_lengths[row][col] + triangle[row+1][col] < path_lengths[row+1][col]:
+        path_lengths[row+1][col] = path_lengths[row][col] + triangle[row+1][col]       
+        paths[row+1][col] = paths[row][col] + [TRIANGLE_MAX - triangle[row][col]]
         
-    if distances[row][col] + array[row+1][col+1] < distances[row+1][col+1]:
-        distances[row+1][col+1] = distances[row][col] + array[row+1][col+1]
-        paths[row+1][col+1] = paths[row][col] + [99 - array[row][col]] #Using '99 - node' de-inverts the node's name
+    if path_lengths[row][col] + triangle[row+1][col+1] < path_lengths[row+1][col+1]:
+        path_lengths[row+1][col+1] = path_lengths[row][col] + triangle[row+1][col+1]
+        paths[row+1][col+1] = paths[row][col] + [TRIANGLE_MAX - triangle[row][col]] #Using (TRIANGLE_MAX-<node>) 'de-inverts' the node
         
     #current node has been "visited"   
     unvisited.remove((row, col))
     
-    min = 10000000
+    min = ARBITRARILY_LARGE_NUMBER
     #visit the unvisited node with the lowest projected cost
     for (i, j) in unvisited:
-        if distances[i][j] < min:
-            min = distances[i][j]
+        if path_lengths[i][j] < min:
+            min = path_lengths[i][j]
             row = i
             col = j
-    
-print "Max cost:", 99*len(distances) - distances[row][col]
-paths[row][col] += [99 - array[row][col]] #need to add last node to path
-print "Path:", paths[row][col]
 
-#this is an Euler challenge but I thought the solution was neat enough to post
+
+paths[row][col] += [TRIANGLE_MAX - triangle[row][col]] #need to add last node to path
+path_length = len(paths[row][col])
+print "Path:", paths[row][col]
+print "Max cost:", path_length * TRIANGLE_MAX - path_lengths[row][col] #'de-invert' the cost
