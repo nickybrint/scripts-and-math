@@ -18,6 +18,10 @@ Definitions:
 - heptagonal      lambda x: x*(5*x - 3)/2
 - octagonal       lambda x: x*(3*x - 2)
 
+This problem is about minimizing the search space.
+We could look at all possible 6-cylcles of 4-digit numbers,
+but there is a more efficient solution...
+
 Solution:
 1. Generate all the 4-digit polygon numbers (there are less than 400)
 2. For each triangular number,
